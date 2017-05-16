@@ -7,11 +7,11 @@
     android:orientation="vertical"
     tools:context="it.therickys93.barorder.TableActivity">
 
-    <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+    <Spinner
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"

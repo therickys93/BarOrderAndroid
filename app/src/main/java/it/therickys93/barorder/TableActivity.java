@@ -22,8 +22,8 @@ public class TableActivity extends AppCompatActivity implements AdapterView.OnIt
         setContentView(R.layout.activity_table);
 
         this.spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, createTables());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner, createTables());
+        adapter.setDropDownViewResource(R.layout.spinner);
         this.spinner.setAdapter(adapter);
         this.spinner.setOnItemSelectedListener(this);
     }
