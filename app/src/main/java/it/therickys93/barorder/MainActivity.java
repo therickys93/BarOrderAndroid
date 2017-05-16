@@ -1,9 +1,12 @@
 package it.therickys93.barorder;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,6 +46,22 @@ public class MainActivity extends AppCompatActivity {
         updateTextView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("Settings");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            default:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+        }
+    }
+
     public void tableButtonPressed(View view){
         Intent intent = new Intent(getApplicationContext(), TableActivity.class);
         startActivityForResult(intent, REQUEST_TABLE_ACTIVITY_CODE);
@@ -70,10 +89,17 @@ public class MainActivity extends AppCompatActivity {
         updateTextView();
     }
 
+    public void resetUI() {
+        this.table = 0;
+        this.id = 0;
+        updateTextView();
+    }
+
     public void orderButtonPressed(View view){
         this.id = (int)(System.currentTimeMillis() / 1000);
         this.order = new Order(this.id, this.table, false, this.products);
         new BarOrderAsyncTask().execute(this.order);
+        resetUI();
     }
 
     public void productsButtonPressed(View view){
@@ -85,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Order... orders) {
-            BarOrder barorder = new BarOrder("http://192.168.1.10");
+            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+            String url = settings.getString("BARORDER_URL", "192.168.1.10");
+            BarOrder barorder = new BarOrder("http://" + url);
             try {
                 String response = barorder.execute(new InsertOrder(orders[0]));
                 Response status = Response.parseSuccess(response);

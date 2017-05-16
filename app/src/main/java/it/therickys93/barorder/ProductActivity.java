@@ -1,6 +1,7 @@
 package it.therickys93.barorder;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +44,9 @@ public class ProductActivity extends AppCompatActivity {
 
         @Override
         protected List<String> doInBackground(Void... voids) {
-            BarOrder barorder = new BarOrder("http://192.168.1.10");
+            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+            String url = settings.getString("BARORDER_URL", "192.168.1.10");
+            BarOrder barorder = new BarOrder("http://" + url);
             try {
                 String response = barorder.execute(new Products());
                 List<String> results = new ArrayList<String>();

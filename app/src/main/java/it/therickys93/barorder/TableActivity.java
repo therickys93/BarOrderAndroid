@@ -1,6 +1,7 @@
 package it.therickys93.barorder;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,6 @@ import java.util.List;
 
 public class TableActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private static final int TABLE_COUNT = 20;
     private Spinner spinner;
 
     @Override
@@ -30,8 +30,11 @@ public class TableActivity extends AppCompatActivity implements AdapterView.OnIt
 
 
     private List<String> createTables() {
+        SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+        String table = settings.getString("BARORDER_TABLE", "20");
+        int count = Integer.parseInt(table);
         List<String> tables = new ArrayList<String>();
-        for(int index = 0; index <= TABLE_COUNT; index++){
+        for(int index = 0; index <= count; index++){
             tables.add(String.valueOf(index));
         }
         return tables;
