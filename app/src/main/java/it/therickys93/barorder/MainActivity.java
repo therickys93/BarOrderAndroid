@@ -5,12 +5,17 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public Order order;
     private int id;
     private int table = 0;
-    private Product[] products = {new Product("acqua", 2), new Product("bibite", 2)};
+    private Product[] products = new Product[0];
     private TextView textView;
 
     @Override
@@ -68,10 +73,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateTextView() {
-        String text = "Order Details:\ntable: " + this.table + "\n";
-        for(int index = 0; index < this.products.length; index++){
-            Product prod = this.products[index];
-            text += prod.quantity() + " " + prod.name() + "\n";
+        String text = "Order Details:\ntable: ";
+        if(this.table == 0){
+            text += "No Table Selected";
+        } else {
+            text += this.table;
+        }
+        text += "\n";
+        if(this.products.length == 0){
+            text += "No Products Selected";
+        }
+        else {
+            for(int index = 0; index < this.products.length; index++){
+                Product prod = this.products[index];
+                text += prod.quantity() + " " + prod.name() + "\n";
+            }
         }
         this.textView.setText(text);
     }
@@ -84,21 +100,40 @@ public class MainActivity extends AppCompatActivity {
             this.table = Integer.parseInt(data.getStringExtra("TABLE"));
         } else if(requestCode == REQUEST_PRODUCT_ACTIVITY_CODE) {
             // dalla product activity
-
+            String result = data.getStringExtra("PRODUCTS");
+            this.products = parseProducts(result);
         }
         updateTextView();
+    }
+
+    private Product[] parseProducts(String result){
+        JsonParser parser = new JsonParser();
+        JsonArray array = parser.parse(result).getAsJsonArray();
+        Product[] prodotti = new Product[array.size()];
+        for(int index = 0; index < array.size(); index++){
+            JsonObject object = array.get(index).getAsJsonObject();
+            String name = object.get("name").getAsString();
+            int value = object.get("quantity").getAsInt();
+            prodotti[index] = new Product(name, value);
+        }
+        return prodotti;
     }
 
     public void resetUI() {
         this.table = 0;
         this.id = 0;
+        this.products = new Product[0];
         updateTextView();
     }
 
     public void orderButtonPressed(View view){
         this.id = (int)(System.currentTimeMillis() / 1000);
-        this.order = new Order(this.id, this.table, false, this.products);
-        new BarOrderAsyncTask().execute(this.order);
+        if(this.table == 0 || this.products.length == 0){
+            Toast.makeText(this, "Fill all the data", Toast.LENGTH_SHORT).show();
+        } else {
+            this.order = new Order(this.id, this.table, false, this.products);
+            new BarOrderAsyncTask().execute(this.order);
+        }
         resetUI();
     }
 

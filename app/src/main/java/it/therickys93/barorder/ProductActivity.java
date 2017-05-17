@@ -12,6 +12,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.util.ArrayList;
@@ -43,11 +47,29 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
 
     public void doneProducts(View view){
         Intent intent = new Intent();
-        // parsare in json il contenuto dei prodotti e dall'altra parte riparsalo e aggiungerlo all'array dei prodotti,
-        // per farlo bisogna anche modificare le api di barorder
-        intent.putExtra("PRODUCTS", false);
+        String response = convertToJson(this.prodotti);
+        if(response != null){
+            intent.putExtra("PRODUCTS", response);
+        } else {
+            intent.putExtra("PRODUCTS", "NONE");
+        }
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private String convertToJson(List<Map<String, String>> prodotti){
+        JsonArray array = new JsonArray();
+        for(Map<String, String> map : prodotti){
+            JsonObject prod = new JsonObject();
+            String key = map.get("name");
+            int value = Integer.parseInt(map.get("quantity"));
+            if(value > 0) {
+                prod.addProperty("name", key);
+                prod.addProperty("quantity", value);
+                array.add(prod);
+            }
+        }
+        return array.toString();
     }
 
     @Override
