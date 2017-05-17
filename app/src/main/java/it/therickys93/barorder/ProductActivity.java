@@ -6,23 +6,30 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import it.therickys93.javabarorderapi.BarOrder;
 import it.therickys93.javabarorderapi.Product;
 import it.therickys93.javabarorderapi.Products;
 import it.therickys93.javabarorderapi.Response;
 
-public class ProductActivity extends AppCompatActivity {
+public class ProductActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ListView listView;
-    private List<Product> productsActivity;
+    private List<Map<String, String>> prodotti;
+    private SimpleAdapter adapterss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,31 +38,53 @@ public class ProductActivity extends AppCompatActivity {
 
         this.listView = (ListView) findViewById(R.id.listView);
         new BarOrderProduct().execute();
+        this.listView.setOnItemClickListener(this);
     }
 
     public void doneProducts(View view){
         Intent intent = new Intent();
+        // parsare in json il contenuto dei prodotti e dall'altra parte riparsalo e aggiungerlo all'array dei prodotti,
+        // per farlo bisogna anche modificare le api di barorder
         intent.putExtra("PRODUCTS", false);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private class BarOrderProduct extends AsyncTask<Void, Void, List<String>> {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
+        Map<String, String> prodotto = this.prodotti.get(index);
+        Set<String> key = prodotto.keySet();
+        int oldValue = Integer.parseInt(prodotto.get(key.toArray()[0]));
+        prodotto.put((String) key.toArray()[0], String.valueOf(oldValue + 1));
+        this.prodotti.set(index, prodotto);
+        this.adapterss = new SimpleAdapter(ProductActivity.this, this.prodotti,
+                android.R.layout.simple_list_item_2,
+                new String[] {"name", "quantity"},
+                new int[] {android.R.id.text1,
+                        android.R.id.text2});
+        this.listView.setAdapter(this.adapterss);
+        this.listView.deferNotifyDataSetChanged();
+    }
+
+    private class BarOrderProduct extends AsyncTask<Void, Void, List<Map<String, String>>> {
 
         @Override
-        protected List<String> doInBackground(Void... voids) {
+        protected List<Map<String, String>> doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "192.168.1.10");
             BarOrder barorder = new BarOrder("http://" + url);
             try {
                 String response = barorder.execute(new Products());
-                List<String> results = new ArrayList<String>();
                 List<Product> products = Response.parseProducts(response);
-                for(int index = 0; index < products.size(); index++) {
-                    results.add(products.get(index).name());
+                List<Map<String, String>> risultato = new ArrayList<>();
+                for(int index = 0; index < products.size(); index++){
+                    Product p = products.get(index);
+                    Map<String, String> prods = new HashMap<>();
+                    prods.put("name", p.name());
+                    prods.put("quantity", String.valueOf(p.quantity()));
+                    risultato.add(prods);
                 }
-                productsActivity = products;
-                return results;
+                return risultato;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -63,10 +92,15 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<String> products) {
+        protected void onPostExecute(List<Map<String, String>> products) {
             super.onPostExecute(products);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ProductActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, products);
-            listView.setAdapter(adapter);
+            prodotti = products;
+            adapterss = new SimpleAdapter(ProductActivity.this, prodotti,
+                    android.R.layout.simple_list_item_2,
+                    new String[] {"name", "quantity"},
+                    new int[] {android.R.id.text1,
+                            android.R.id.text2});
+            listView.setAdapter(adapterss);
         }
     }
 }

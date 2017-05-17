@@ -49,11 +49,11 @@ public class TableActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+        // non fare nulla
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        // non fare nulla
     }
 }
