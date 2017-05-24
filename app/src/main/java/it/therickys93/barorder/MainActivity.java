@@ -32,12 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_TABLE_ACTIVITY_CODE = 123;
     public static final int REQUEST_PRODUCT_ACTIVITY_CODE = 234;
 
-    private Button tableButton;
-    private Button orderButton;
     public Order order;
-    private int id;
-    private int table = 0;
-    private Product[] products = new Product[0];
     private TextView textView;
 
     @Override
@@ -45,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.tableButton = (Button) findViewById(R.id.tableButton);
-        this.orderButton = (Button) findViewById(R.id.orderButton);
+        this.order = new Order(0, 0, false, new Product[0]);
 
         this.textView = (TextView)findViewById(R.id.orderInfo);
         updateTextView();
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
+        Intent intent;
         switch (item.getItemId()){
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
@@ -82,23 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateTextView() {
-        String text = "Order Details:\ntable: ";
-        if(this.table == 0){
-            text += "No Table Selected";
-        } else {
-            text += this.table;
-        }
-        text += "\n";
-        if(this.products.length == 0){
-            text += "No Products Selected";
-        }
-        else {
-            for(int index = 0; index < this.products.length; index++){
-                Product prod = this.products[index];
-                text += prod.quantity() + " " + prod.name() + "\n";
-            }
-        }
-        this.textView.setText(text);
+        this.textView.setText(this.order.prettyToString());
     }
 
     @Override
@@ -106,11 +84,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_TABLE_ACTIVITY_CODE){
             // dalla table activity
-            this.table = Integer.parseInt(data.getStringExtra("TABLE"));
+            int table = Integer.parseInt(data.getStringExtra("TABLE"));
+            this.order.setTable(table);
         } else if(requestCode == REQUEST_PRODUCT_ACTIVITY_CODE) {
             // dalla product activity
             String result = data.getStringExtra("PRODUCTS");
-            this.products = parseProducts(result);
+            Product[] products = parseProducts(result);
+            this.order.setProducts(products);
         }
         updateTextView();
     }
@@ -129,21 +109,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetUI() {
-        this.table = 0;
-        this.id = 0;
-        this.products = new Product[0];
+        this.order.setId(0);
+        this.order.setTable(0);
+        this.order.setProducts(new Product[0]);
         updateTextView();
     }
 
     public void orderButtonPressed(View view){
-        this.id = (int)(System.currentTimeMillis() / 1000);
-        if(this.table == 0 || this.products.length == 0){
+        int id = (int)(System.currentTimeMillis() / 1000);
+        if(this.order.table() == 0 || this.order.products().length == 0){
             Toast.makeText(this, "Fill all the data", Toast.LENGTH_SHORT).show();
         } else {
-            this.order = new Order(this.id, this.table, false, this.products);
-            new BarOrderAsyncTask().execute(this.order);
+            this.order.setId(id);
+            System.out.println(this.order.toString());
+            System.out.println(this.order.toJson().toString());
+            Order orders = this.order;
+            new BarOrderAsyncTask().execute(orders);
         }
-        resetUI();
     }
 
     public void productsButtonPressed(View view){
@@ -155,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Order... orders) {
+            System.out.println(orders[0].toString());
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "192.168.1.10");
             BarOrder barorder = new BarOrder("http://" + url);
@@ -176,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(MainActivity.this, "Retry! Something goes wrong!!!", Toast.LENGTH_SHORT).show();
             }
+            resetUI();
         }
     }
 }
