@@ -65,6 +65,21 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, StatusActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.order:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.orders:
+                intent = new Intent(this, OrdersActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.payments:
+                intent = new Intent(this, PaymentsActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -121,10 +136,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Fill all the data", Toast.LENGTH_SHORT).show();
         } else {
             this.order.setId(id);
-            System.out.println(this.order.toString());
-            System.out.println(this.order.toJson().toString());
-            Order orders = this.order;
-            new BarOrderAsyncTask().execute(orders);
+            new BarOrderAsyncTask().execute(this.order);
         }
     }
 
@@ -137,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Order... orders) {
-            System.out.println(orders[0].toString());
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "192.168.1.10");
             BarOrder barorder = new BarOrder("http://" + url);
