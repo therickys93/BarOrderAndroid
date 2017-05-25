@@ -3,6 +3,7 @@ package it.therickys93.barorder;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,15 +28,45 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
     private ListView listView;
     private List<Order> orders;
     private OrderAdapter adapter;
+    private static int TIMER_DELAY = 1000;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
+        handler = new Handler();
+        startRepeatingTask();
+
         this.listView = (ListView) findViewById(R.id.ordersListView);
         new BarOrderGetOrders().execute();
         this.listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopRepeatingTask();
+    }
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                new BarOrderGetOrders().execute();
+            } finally {
+                handler.postDelayed(mStatusChecker, TIMER_DELAY);
+            }
+        }
+    };
+
+    void startRepeatingTask() {
+        mStatusChecker.run();
+    }
+
+    void stopRepeatingTask() {
+        handler.removeCallbacks(mStatusChecker);
     }
 
     @Override
