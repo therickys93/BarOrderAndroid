@@ -26,6 +26,7 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
 
     private ListView listView;
     private List<Order> orders;
+    private OrderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,8 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_orders);
 
         this.listView = (ListView) findViewById(R.id.ordersListView);
-//        new BarOrderGetOrders().execute();
-//        this.listView.setOnItemClickListener(this);
+        new BarOrderGetOrders().execute();
+        this.listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -78,8 +79,9 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-        Toast.makeText(this, "Click item at " + index, Toast.LENGTH_SHORT).show();
-        // new BarOrderCompleteOrder().execute(null);
+        Order order = this.orders.get(index);
+        new BarOrderCompleteOrder().execute(order);
+        new BarOrderGetOrders().execute();
     }
 
     private class BarOrderGetOrders extends AsyncTask<Void, Void, List<Order>> {
@@ -92,7 +94,7 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
             try {
                 String response = barorder.execute(new Orders());
                 List<Order> ordini = Response.parseOrders(response);
-                return orders;
+                return ordini;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -101,7 +103,10 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
 
         @Override
         protected void onPostExecute(List<Order> ordini) {
-            super.onPostExecute(orders);
+            super.onPostExecute(ordini);
+            orders = ordini;
+            adapter = new OrderAdapter(OrdersActivity.this, orders);
+            listView.setAdapter(adapter);
         }
     }
 
