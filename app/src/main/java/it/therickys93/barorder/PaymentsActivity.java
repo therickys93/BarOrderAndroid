@@ -25,6 +25,8 @@ import it.therickys93.javabarorderapi.Response;
 public class PaymentsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ListView listView;
+    private List<Order> orders;
+    private OrderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +34,15 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_payments);
 
         this.listView = (ListView) findViewById(R.id.paymentsListView);
-        //new BarOrderGetPayments().execute();
+        new BarOrderGetPayments().execute();
+        this.listView.setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-        Toast.makeText(this, "Click item at " + index, Toast.LENGTH_SHORT).show();
-        // new BarOrderPayOrder().execute(null);
+        Order order = this.orders.get(index);
+        new BarOrderPayOrder().execute(order);
+        new BarOrderGetPayments().execute();
     }
 
     @Override
@@ -98,8 +102,11 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         }
 
         @Override
-        protected void onPostExecute(List<Order> orders) {
-            super.onPostExecute(orders);
+        protected void onPostExecute(List<Order> ordini) {
+            super.onPostExecute(ordini);
+            orders = ordini;
+            adapter = new OrderAdapter(PaymentsActivity.this, orders);
+            listView.setAdapter(adapter);
         }
     }
 
