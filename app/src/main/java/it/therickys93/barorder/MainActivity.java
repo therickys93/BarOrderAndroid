@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.order = new Order(0, 0, false, new Product[0]);
+        this.order = new Order();
 
         this.textView = (TextView)findViewById(R.id.orderInfo);
         updateTextView();
