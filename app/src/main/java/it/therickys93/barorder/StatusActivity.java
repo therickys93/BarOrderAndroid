@@ -65,6 +65,13 @@ public class StatusActivity extends AppCompatActivity {
     private class BarOrderStatus extends AsyncTask<Void, Void, Boolean>{
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            statusColorTextView.setText("CHECKING");
+            statusMessageTextView.setText("Checking in progress...");
+        }
+
+        @Override
         protected Boolean doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "192.168.1.10");
