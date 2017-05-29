@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Product[] parseProducts(String result){
+        if(result.equals("NONE")){
+            return new Product[0];
+        }
         JsonParser parser = new JsonParser();
         JsonArray array = parser.parse(result).getAsJsonArray();
         Product[] prodotti = new Product[array.size()];

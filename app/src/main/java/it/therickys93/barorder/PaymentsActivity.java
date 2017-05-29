@@ -126,8 +126,8 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
                 String response = barorder.execute(new Payments());
                 List<Order> ordini = Response.parseOrders(response);
                 return ordini;
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("Exception: " + e.getMessage());
                 return null;
             }
         }

@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.therickys93.javabarorderapi.BarOrder;
@@ -126,8 +127,8 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
                 String response = barorder.execute(new Orders());
                 List<Order> ordini = Response.parseOrders(response);
                 return ordini;
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("Exception: " + e.getMessage());
                 return null;
             }
         }

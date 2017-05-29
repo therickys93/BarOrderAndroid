@@ -48,7 +48,7 @@ public class StatusActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
+        Intent intent;
         switch (item.getItemId()){
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
@@ -80,8 +80,8 @@ public class StatusActivity extends AppCompatActivity {
                 String response = barorder.execute(new it.therickys93.javabarorderapi.Status());
                 Response status = Response.parseSuccess(response);
                 return status.ok();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("Exception: " + e.getMessage());
                 return false;
             }
         }
