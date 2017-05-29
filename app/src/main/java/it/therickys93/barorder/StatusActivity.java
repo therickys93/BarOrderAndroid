@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 
 import it.therickys93.javabarorderapi.BarOrder;
@@ -21,6 +23,9 @@ public class StatusActivity extends AppCompatActivity {
 
     private TextView statusColorTextView;
     private TextView statusMessageTextView;
+    private TextView statusServerCheck;
+    private TextView statusDatabaseCheck;
+    private TextView statusVersionCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,9 @@ public class StatusActivity extends AppCompatActivity {
 
         this.statusColorTextView = (TextView) findViewById(R.id.status_color_textview);
         this.statusMessageTextView = (TextView) findViewById(R.id.status_message_textview);
+        this.statusServerCheck = (TextView) findViewById(R.id.status_server_textview);
+        this.statusDatabaseCheck = (TextView) findViewById(R.id.status_database_textView);
+        this.statusVersionCheck = (TextView) findViewById(R.id.status_version_textview);
     }
 
     public void checkStatus(View view){
@@ -62,34 +70,43 @@ public class StatusActivity extends AppCompatActivity {
     }
 
 
-    private class BarOrderStatus extends AsyncTask<Void, Void, Boolean>{
+    private class BarOrderStatus extends AsyncTask<Void, Void, Response>{
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             statusColorTextView.setText("CHECKING");
             statusMessageTextView.setText("Checking in progress...");
+            statusServerCheck.setText("");
+            statusDatabaseCheck.setText("");
+            statusVersionCheck.setText("");
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Response doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "192.168.1.10");
             BarOrder barorder = new BarOrder("http://" + url);
             try {
                 String response = barorder.execute(new it.therickys93.javabarorderapi.Status());
-                Response status = Response.parseSuccess(response);
-                return status.ok();
+                Response status = Response.parseStatus(response);
+                return status;
             } catch (Exception e) {
                 System.out.println("Exception: " + e.getMessage());
-                return false;
+                return null;
             }
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            if(aBoolean){
+        protected void onPostExecute(Response response) {
+            super.onPostExecute(response);
+            if(response == null){
+                statusColorTextView.setBackgroundColor(Color.parseColor("#ff0000"));
+                statusColorTextView.setText("NOT HEALTHY");
+                statusMessageTextView.setText("System not available");
+                return;
+            }
+            if(response.ok()) {
                 statusColorTextView.setBackgroundColor(Color.parseColor("#00ff00"));
                 statusColorTextView.setText("HEALTHY");
                 statusMessageTextView.setText("System is online");
@@ -98,6 +115,21 @@ public class StatusActivity extends AppCompatActivity {
                 statusColorTextView.setText("NOT HEALTHY");
                 statusMessageTextView.setText("System not available");
             }
+            if(response.server()){
+                statusServerCheck.setText("Server: HEALTHY");
+                statusServerCheck.setBackgroundColor(Color.parseColor("#00ff00"));
+            } else {
+                statusServerCheck.setText("Server: NOT HEALTHY");
+                statusServerCheck.setBackgroundColor(Color.parseColor("#ff0000"));
+            }
+            if(response.database()){
+                statusDatabaseCheck.setText("Database: HEALTHY");
+                statusDatabaseCheck.setBackgroundColor(Color.parseColor("#00ff00"));
+            } else {
+                statusDatabaseCheck.setText("Server: NOT HEALTHY");
+                statusDatabaseCheck.setBackgroundColor(Color.parseColor("#ff0000"));
+            }
+            statusVersionCheck.setText("Server Version: " + response.version());
         }
     }
 

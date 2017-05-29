@@ -30,6 +30,30 @@
             android:textAlignment="center"
             android:text="to check the status" />
 
+        <TextView
+            android:id="@+id/status_server_textview"
+            android:layout_width="match_parent"
+            android:text="Server Check"
+            android:textSize="22dp"
+            android:textAlignment="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/status_database_textView"
+            android:text="Database Check"
+            android:textSize="22dp"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/status_version_textview"
+            android:text="Server Version"
+            android:textAlignment="center"
+            android:textSize="22dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/status_button"
             android:onClick="checkStatus"
