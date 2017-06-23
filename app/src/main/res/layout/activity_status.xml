@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/status_version_textview"
-            android:text="Version Server"
+            android:text="Versione Server"
             android:textAlignment="center"
             android:textSize="22dp"
             android:layout_width="match_parent"

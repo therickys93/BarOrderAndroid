@@ -75,8 +75,8 @@ public class StatusActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            statusColorTextView.setText("CHECKING");
-            statusMessageTextView.setText("Checking in progress...");
+            statusColorTextView.setText("STO VERIFICANDO");
+            statusMessageTextView.setText("Verifica in corso...");
             statusServerCheck.setText("");
             statusDatabaseCheck.setText("");
             statusVersionCheck.setText("");
@@ -129,7 +129,7 @@ public class StatusActivity extends AppCompatActivity {
                 statusDatabaseCheck.setText("Database: NON ATTIVO");
                 statusDatabaseCheck.setBackgroundColor(Color.parseColor("#ff0000"));
             }
-            statusVersionCheck.setText("Server Version: " + response.version());
+            statusVersionCheck.setText("Versione Server: " + response.version());
         }
     }
 
