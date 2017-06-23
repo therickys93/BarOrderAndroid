@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/order"
-        android:title="Order Now" />
+        android:title="Ordina" />
 
     <item android:id="@+id/orders"
-        android:title="Orders"
+        android:title="Ordini"
         app:showAsAction="always"/>
 
     <item android:id="@+id/payments"
-        android:title="Payments"
+        android:title="Pagamenti"
         app:showAsAction="always"/>
 
     <item android:id="@+id/settings"
-        android:title="Settings" />
+        android:title="Impostazioni" />
 
     <item android:id="@+id/status"
-        android:title="Status"
+        android:title="Stato"
         />
 </menu>

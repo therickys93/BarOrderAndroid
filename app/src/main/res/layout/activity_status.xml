@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textSize="35dp"
             android:textAlignment="center"
-            android:text="Press the button"
+            android:text="Premi il bottone"
             />
 
         <TextView
@@ -28,19 +28,19 @@
             android:layout_height="wrap_content"
             android:textSize="22dp"
             android:textAlignment="center"
-            android:text="to check the status" />
+            android:text="per verificare lo stato" />
 
         <TextView
             android:id="@+id/status_server_textview"
             android:layout_width="match_parent"
-            android:text="Server Check"
+            android:text="Verifica Server"
             android:textSize="22dp"
             android:textAlignment="center"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/status_database_textView"
-            android:text="Database Check"
+            android:text="Verifica Database"
             android:textSize="22dp"
             android:textAlignment="center"
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/status_version_textview"
-            android:text="Server Version"
+            android:text="Version Server"
             android:textAlignment="center"
             android:textSize="22dp"
             android:layout_width="match_parent"
@@ -59,13 +59,13 @@
             android:onClick="checkStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="check" />
+            android:text="verifica stato" />
 
         <Button
             android:id="@+id/status_go_back"
             android:onClick="goBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go Back" />
+            android:text="torna indietro" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

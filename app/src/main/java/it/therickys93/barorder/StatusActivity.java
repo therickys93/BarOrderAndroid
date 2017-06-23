@@ -102,31 +102,31 @@ public class StatusActivity extends AppCompatActivity {
             super.onPostExecute(response);
             if(response == null){
                 statusColorTextView.setBackgroundColor(Color.parseColor("#ff0000"));
-                statusColorTextView.setText("NOT HEALTHY");
-                statusMessageTextView.setText("System not available");
+                statusColorTextView.setText("NON ATTIVO");
+                statusMessageTextView.setText("Sistema non disponibile");
                 return;
             }
             if(response.ok()) {
                 statusColorTextView.setBackgroundColor(Color.parseColor("#00ff00"));
-                statusColorTextView.setText("HEALTHY");
-                statusMessageTextView.setText("System is online");
+                statusColorTextView.setText("ATTIVO");
+                statusMessageTextView.setText("Sistema disponibile");
             } else {
                 statusColorTextView.setBackgroundColor(Color.parseColor("#ff0000"));
-                statusColorTextView.setText("NOT HEALTHY");
-                statusMessageTextView.setText("System not available");
+                statusColorTextView.setText("NON ATTIVO");
+                statusMessageTextView.setText("Sistema non disponibile");
             }
             if(response.server()){
-                statusServerCheck.setText("Server: HEALTHY");
+                statusServerCheck.setText("Server: ATTIVO");
                 statusServerCheck.setBackgroundColor(Color.parseColor("#00ff00"));
             } else {
-                statusServerCheck.setText("Server: NOT HEALTHY");
+                statusServerCheck.setText("Server: NON ATTIVO");
                 statusServerCheck.setBackgroundColor(Color.parseColor("#ff0000"));
             }
             if(response.database()){
-                statusDatabaseCheck.setText("Database: HEALTHY");
+                statusDatabaseCheck.setText("Database: ATTIVO");
                 statusDatabaseCheck.setBackgroundColor(Color.parseColor("#00ff00"));
             } else {
-                statusDatabaseCheck.setText("Server: NOT HEALTHY");
+                statusDatabaseCheck.setText("Database: NON ATTIVO");
                 statusDatabaseCheck.setBackgroundColor(Color.parseColor("#ff0000"));
             }
             statusVersionCheck.setText("Server Version: " + response.version());

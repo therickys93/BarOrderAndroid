@@ -50,7 +50,7 @@ public class OrderAdapter extends BaseAdapter {
         TextView id = (TextView)vi.findViewById(R.id.orderID);
         TextView details = (TextView)vi.findViewById(R.id.orderDetails);
         if(orders == null || orders.size() == 0){
-            id.setText("No Orders Found");
+            id.setText("Nessun Ordine Trovato");
             details.setText("");
         } else {
             Order order = orders.get(position);

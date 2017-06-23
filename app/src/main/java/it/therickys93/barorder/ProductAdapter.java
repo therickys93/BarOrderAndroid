@@ -49,7 +49,7 @@ public class ProductAdapter extends BaseAdapter {
         TextView id = (TextView)vi.findViewById(R.id.productName);
         TextView details = (TextView)vi.findViewById(R.id.productCount);
         if(products == null || products.size() == 0){
-            id.setText("No Products Found");
+            id.setText("Nessun prodotto trovato");
             details.setText("");
         } else {
             Product product = products.get(position);

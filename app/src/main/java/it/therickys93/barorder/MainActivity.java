@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public void orderButtonPressed(View view){
         int id = (int)(System.currentTimeMillis() / 1000);
         if(this.order.table() == 0 || this.order.products().length == 0){
-            Toast.makeText(this, "Fill all the data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Non tutti i dati sono stati completati", Toast.LENGTH_SHORT).show();
         } else {
             this.order.setId(id);
             new BarOrderAsyncTask().execute(this.order);
@@ -169,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(aBoolean) {
-                Toast.makeText(MainActivity.this, "Success!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Ordine effettuato con successo!!!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Retry! Something goes wrong!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Riprova!! Ordine non effettuato!!", Toast.LENGTH_SHORT).show();
             }
             resetUI();
         }

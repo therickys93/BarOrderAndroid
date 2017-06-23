@@ -161,9 +161,9 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(aBoolean) {
-                Toast.makeText(PaymentsActivity.this, "Success!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaymentsActivity.this, "Ordine pagato con successo!!!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(PaymentsActivity.this, "Retry! Something goes wrong!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaymentsActivity.this, "Riprova!! Ordine non effettuato!!", Toast.LENGTH_SHORT).show();
             }
         }
     }

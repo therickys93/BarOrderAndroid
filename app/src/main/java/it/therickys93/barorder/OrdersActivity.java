@@ -163,9 +163,9 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(aBoolean) {
-                Toast.makeText(OrdersActivity.this, "Success!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrdersActivity.this, "Ordine completato con successo!!!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(OrdersActivity.this, "Retry! Something goes wrong!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrdersActivity.this, "Riprova!! Ordine non completato!!", Toast.LENGTH_SHORT).show();
             }
         }
     }
