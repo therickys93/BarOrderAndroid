@@ -31,6 +31,10 @@ public class ProductAdapter extends BaseAdapter {
         return products.size();
     }
 
+    public void updateProdotti(List<Product> prodotti){
+        this.products = prodotti;
+    }
+
     public Product getItem(int position) {
         return products.get(position);
     }

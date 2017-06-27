@@ -79,9 +79,8 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
             product = new Product(product.name(), product.quantity() + 1);
             this.prodotti.remove(index);
             this.prodotti.add(index, product);
-            this.adapterss = new ProductAdapter(this, this.prodotti);
-            this.listView.setAdapter(this.adapterss);
-            this.listView.deferNotifyDataSetChanged();
+            this.adapterss.updateProdotti(this.prodotti);
+            this.adapterss.notifyDataSetChanged();
         }
     }
 
