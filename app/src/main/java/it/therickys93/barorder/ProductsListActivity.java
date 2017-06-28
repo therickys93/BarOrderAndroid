@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,13 +20,14 @@ import android.widget.Toast;
 import java.util.List;
 
 import it.therickys93.javabarorderapi.BarOrder;
+import it.therickys93.javabarorderapi.DeleteProduct;
 import it.therickys93.javabarorderapi.DeleteProductAll;
 import it.therickys93.javabarorderapi.InsertProduct;
 import it.therickys93.javabarorderapi.Product;
 import it.therickys93.javabarorderapi.Products;
 import it.therickys93.javabarorderapi.Response;
 
-public class ProductsListActivity extends AppCompatActivity {
+public class ProductsListActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     private ListView listView;
     private List<Product> prodotti;
@@ -38,6 +40,15 @@ public class ProductsListActivity extends AppCompatActivity {
 
         this.listView = (ListView) findViewById(R.id.productsList);
         new BarOrderGetProducts().execute();
+        this.listView.setOnItemLongClickListener(this);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
+        Product product = this.prodotti.get(index);
+        String name = product.name();
+        new BarOrderDeleteProduct().execute(name);
+        return true;
     }
 
     public void insertProduct(View view){
@@ -115,6 +126,36 @@ public class ProductsListActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class BarOrderDeleteProduct extends AsyncTask<String, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+            String url = settings.getString("BARORDER_URL", "192.168.1.10");
+            BarOrder barorder = new BarOrder("http://" + url);
+            try {
+                String response = barorder.execute(new DeleteProduct(strings[0]));
+                Response responseObj = Response.parseSuccess(response);
+                return responseObj.ok();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Exception: " + e.getMessage());
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(aBoolean) {
+                Toast.makeText(ProductsListActivity.this, "Prodotto eliminato con successo!!!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ProductsListActivity.this, "Riprova!! Prodotto non eliminato!!", Toast.LENGTH_SHORT).show();
+            }
+            new BarOrderGetProducts().execute();
         }
     }
 
