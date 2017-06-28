@@ -1,14 +1,18 @@
 package it.therickys93.barorder;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,6 +20,7 @@ import java.util.List;
 
 import it.therickys93.javabarorderapi.BarOrder;
 import it.therickys93.javabarorderapi.DeleteProductAll;
+import it.therickys93.javabarorderapi.InsertProduct;
 import it.therickys93.javabarorderapi.Product;
 import it.therickys93.javabarorderapi.Products;
 import it.therickys93.javabarorderapi.Response;
@@ -33,6 +38,35 @@ public class ProductsListActivity extends AppCompatActivity {
 
         this.listView = (ListView) findViewById(R.id.productsList);
         new BarOrderGetProducts().execute();
+    }
+
+    public void insertProduct(View view){
+        showDialog();
+    }
+
+    public void showDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+
+        dialogBuilder.setTitle("Nuovo Prodotto");
+        dialogBuilder.setMessage("Inserisci nome nuovo prodotto");
+        dialogBuilder.setPositiveButton("Fatto", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String name = edt.getText().toString();
+                new BarOrderInsertProduct().execute(name);
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // non fare nulla
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     public void deleteProductsAll(View view) {
@@ -81,6 +115,36 @@ public class ProductsListActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class BarOrderInsertProduct extends AsyncTask<String, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+            String url = settings.getString("BARORDER_URL", "192.168.1.10");
+            BarOrder barorder = new BarOrder("http://" + url);
+            try {
+                String response = barorder.execute(new InsertProduct(strings[0]));
+                Response responseObj = Response.parseSuccess(response);
+                return responseObj.ok();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Exception: " + e.getMessage());
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(aBoolean) {
+                Toast.makeText(ProductsListActivity.this, "Prodotto aggiunto con successo!!!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ProductsListActivity.this, "Riprova!! Prodotto non aggiunto!!", Toast.LENGTH_SHORT).show();
+            }
+            new BarOrderGetProducts().execute();
         }
     }
 
