@@ -104,6 +104,11 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.prodotti:
+                intent = new Intent(this, ProductsListActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

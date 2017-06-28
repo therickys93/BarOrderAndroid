@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.prodotti:
+                intent = new Intent(this, ProductsListActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

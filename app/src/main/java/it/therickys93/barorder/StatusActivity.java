@@ -61,9 +61,31 @@ public class StatusActivity extends AppCompatActivity {
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                return true;
             case R.id.status:
                 intent = new Intent(this, StatusActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.order:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.orders:
+                intent = new Intent(this, OrdersActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.payments:
+                intent = new Intent(this, PaymentsActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.prodotti:
+                intent = new Intent(this, ProductsListActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
