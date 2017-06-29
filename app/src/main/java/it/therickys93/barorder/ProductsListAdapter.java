@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import it.therickys93.javabarorderapi.Product;
+import it.therickys93.javabarorderapi.ProductWithPrice;
 
 public class ProductsListAdapter extends BaseAdapter {
 
     private Activity activity;
-    private List<Product> products;
+    private List<ProductWithPrice> products;
     private static LayoutInflater inflater=null;
 
-    public ProductsListAdapter(Activity a, List<Product> prodotti) {
+    public ProductsListAdapter(Activity a, List<ProductWithPrice> prodotti) {
         this.activity = a;
         this.products = prodotti;
         this.inflater = (LayoutInflater)this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,7 +31,7 @@ public class ProductsListAdapter extends BaseAdapter {
         return products.size();
     }
 
-    public Product getItem(int position) {
+    public ProductWithPrice getItem(int position) {
         return products.get(position);
     }
 
@@ -52,9 +52,9 @@ public class ProductsListAdapter extends BaseAdapter {
             id.setText("Nessun prodotto trovato");
             details.setText("");
         } else {
-            Product product = products.get(position);
+            ProductWithPrice product = products.get(position);
             id.setText(product.name());
-            details.setText("" + product.quantity());
+            details.setText(product.price() + "€");
         }
         return vi;
     }

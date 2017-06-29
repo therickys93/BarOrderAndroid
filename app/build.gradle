@@ -37,7 +37,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.github.therickys93:javabarorderapi:df258328a2'
+    compile 'com.github.therickys93:javabarorderapi:8c6bba4fcf'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
