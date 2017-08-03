@@ -29,7 +29,7 @@ import it.therickys93.javabarorderapi.Product;
 import it.therickys93.javabarorderapi.Products;
 import it.therickys93.javabarorderapi.Response;
 
-public class ProductActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class ProductActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private ListView listView;
     private List<Product> prodotti;
@@ -43,6 +43,7 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         this.listView = (ListView) findViewById(R.id.listView);
         new BarOrderProduct().execute();
         this.listView.setOnItemClickListener(this);
+        this.listView.setOnItemLongClickListener(this);
     }
 
     public void doneProducts(View view){
@@ -82,6 +83,21 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
             this.adapterss.updateProdotti(this.prodotti);
             this.adapterss.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
+        if(prodotti == null){
+
+        } else {
+            Product product = this.prodotti.get(index);
+            product = new Product(product.name(), 0);
+            this.prodotti.remove(index);
+            this.prodotti.add(index, product);
+            this.adapterss.updateProdotti(this.prodotti);
+            this.adapterss.notifyDataSetChanged();
+        }
+        return true;
     }
 
     private class BarOrderProduct extends AsyncTask<Void, Void, List<Product>> {
