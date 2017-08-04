@@ -31,7 +31,7 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
 
     private ListView listView;
     private List<Product> prodotti;
-    private ProductAdapter adapter;
+    private ProductListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +211,7 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         protected void onPostExecute(List<Product> products) {
             super.onPostExecute(products);
             prodotti = products;
-            adapter = new ProductAdapter(ProductsListActivity.this, prodotti);
+            adapter = new ProductListAdapter(ProductsListActivity.this, prodotti);
             listView.setAdapter(adapter);
         }
     }
