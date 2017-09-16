@@ -14,11 +14,18 @@
         android:ems="10" />
 
     <EditText
-        android:id="@+id/editTextTable"
+        android:layout_width="match_parent"
+        android:id="@+id/editTextTableMin"
+        android:ems="10"
+        android:hint="INSERISCI NUMERO TAVOLI MIN:"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editTextTableMax"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="INSERISCI NUMERO TAVOLI: "/>
+        android:hint="INSERISCI NUMERO TAVOLO MAX: "/>
 
     <Button
         android:id="@+id/button"

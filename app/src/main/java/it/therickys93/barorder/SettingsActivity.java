@@ -10,7 +10,8 @@ import android.widget.TextView;
 public class SettingsActivity extends AppCompatActivity {
 
     private EditText editTextUrl;
-    private EditText editTextTable;
+    private EditText editTextTableMin;
+    private EditText editTextTableMax;
     private TextView appVersionTextView;
 
     @Override
@@ -19,24 +20,28 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         this.editTextUrl = (EditText) findViewById(R.id.editTextUrl);
-        this.editTextTable = (EditText) findViewById(R.id.editTextTable);
+        this.editTextTableMin = (EditText) findViewById(R.id.editTextTableMin);
+        this.editTextTableMax = (EditText) findViewById(R.id.editTextTableMax);
         this.appVersionTextView = (TextView) findViewById(R.id.appVersion);
 
         this.appVersionTextView.setText("Versione applicazione: " + BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
 
         SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
         String url = settings.getString("BARORDER_URL", "192.168.1.10");
-        String table = settings.getString("BARORDER_TABLE", "20");
+        String tableMax = settings.getString("BARORDER_TABLE_MAX", "20");
+        String tableMin = settings.getString("BARORDER_TABLE_MIN", "0");
 
         this.editTextUrl.setText(url);
-        this.editTextTable.setText(table);
+        this.editTextTableMin.setText(tableMin);
+        this.editTextTableMax.setText(tableMax);
     }
 
     public void doneSettings(View view) {
         SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("BARORDER_URL", this.editTextUrl.getText().toString());
-        editor.putString("BARORDER_TABLE", this.editTextTable.getText().toString());
+        editor.putString("BARORDER_TABLE_MIN", this.editTextTableMin.getText().toString());
+        editor.putString("BARORDER_TABLE_MAX", this.editTextTableMax.getText().toString());
         editor.commit();
         finish();
     }
