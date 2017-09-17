@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         updateTextView();
     }
 
-    private Product[] parseProducts(String result){
+    public static Product[] parseProducts(String result){
         if(result.equals("NONE")){
             return new Product[0];
         }
