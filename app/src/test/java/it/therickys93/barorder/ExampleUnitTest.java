@@ -2,6 +2,9 @@ package it.therickys93.barorder;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.therickys93.javabarorderapi.Product;
 
 import static org.junit.Assert.*;
@@ -47,11 +50,46 @@ public class ExampleUnitTest {
     }
 
     private String oneProduct() {
-        return "[{\"name\": \"cioccolata con panna\", \"quantity\": 2}]";
+        return "[{\"name\":\"cioccolata con panna\",\"quantity\":2}]";
     }
 
     private String moreThanOneProducts() {
-        return "[{\"name\": \"cioccolata con panna\", \"quantity\": 2}, {\"name\": \"brioches\", \"quantity\": 2}]";
+        return "[{\"name\":\"cioccolata con panna\",\"quantity\":2},{\"name\":\"brioches\",\"quantity\":2}]";
+    }
+
+    @Test
+    public void convertToJsonNoProducts() {
+        String json = ProductActivity.convertToJson(noProductsList());
+        assertNull(json);
+    }
+
+    @Test
+    public void convertToJsonOneProduct() {
+        String json = ProductActivity.convertToJson(oneProductList());
+        assertEquals(json, oneProduct());
+    }
+
+    @Test
+    public void convertToJsonMoreThanOneProducts() {
+        String json = ProductActivity.convertToJson(moreThanOneProductsList());
+        assertEquals(json, moreThanOneProducts());
+    }
+
+    private List<Product> noProductsList() {
+        return null;
+    }
+
+    private List<Product> oneProductList() {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("cioccolata con panna", 2));
+        return products;
+    }
+
+    private List<Product> moreThanOneProductsList() {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("cioccolata con panna", 2));
+        products.add(new Product("brioches", 2));
+        return products;
     }
 
 }

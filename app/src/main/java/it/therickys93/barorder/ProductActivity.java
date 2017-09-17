@@ -58,7 +58,7 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         finish();
     }
 
-    private String convertToJson(List<Product> prodotti){
+    public static String convertToJson(List<Product> prodotti){
         if(prodotti == null){
             return null;
         }
