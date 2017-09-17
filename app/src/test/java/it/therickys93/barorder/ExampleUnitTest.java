@@ -92,4 +92,30 @@ public class ExampleUnitTest {
         return products;
     }
 
+    @Test
+    public void tableRangeWithZero() {
+        List<String> tables = TableActivity.tableRange(0, 0);
+        for(int index = 0; index < tables.size(); index++){
+            assertEquals(index, Integer.parseInt(tables.get(index)));
+        }
+    }
+
+    @Test
+    public void tableRangeFromZeroToTwenty() {
+        List<String> tables = TableActivity.tableRange(0, 20);
+        for(int index = 0; index < tables.size(); index++){
+            assertEquals(index, Integer.parseInt(tables.get(index)));
+        }
+    }
+
+    @Test
+    public void tableRangeFromNumberNotEqualsToZero() {
+        int min = 10;
+        int max = 30;
+        List<String> tables = TableActivity.tableRange(min, max);
+        for(int index = min; index < max; index++){
+            assertEquals(index, Integer.parseInt(tables.get(index - min)));
+        }
+    }
+
 }

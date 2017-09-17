@@ -35,8 +35,12 @@ public class TableActivity extends AppCompatActivity implements AdapterView.OnIt
         String tableMax = settings.getString("BARORDER_TABLE_MAX", "20");
         int countMax = Integer.parseInt(tableMax);
         int countMin = Integer.parseInt(tableMin);
+        return tableRange(countMin, countMax);
+    }
+
+    public static List<String> tableRange(int min, int max){
         List<String> tables = new ArrayList<String>();
-        for(int index = countMin; index <= countMax; index++){
+        for(int index = min; index <= max; index++){
             tables.add(String.valueOf(index));
         }
         return tables;
