@@ -1,71 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="it.therickys93.barorder.StatusActivity">
+    android:padding="10dp"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:orientation="vertical"
-        >
+    <TextView
+        android:id="@+id/status_color_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:textAlignment="center"
+        android:text="Premi il bottone"
+        />
 
-        <TextView
-            android:id="@+id/status_color_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="35dp"
-            android:textAlignment="center"
-            android:text="Premi il bottone"
-            />
+    <TextView
+        android:id="@+id/status_message_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22dp"
+        android:textAlignment="center"
+        android:text="per verificare lo stato" />
 
-        <TextView
-            android:id="@+id/status_message_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="22dp"
-            android:textAlignment="center"
-            android:text="per verificare lo stato" />
+    <TextView
+        android:id="@+id/status_server_textview"
+        android:layout_width="match_parent"
+        android:text="Verifica Server"
+        android:textSize="22dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/status_server_textview"
-            android:layout_width="match_parent"
-            android:text="Verifica Server"
-            android:textSize="22dp"
-            android:textAlignment="center"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/status_database_textView"
+        android:text="Verifica Database"
+        android:textSize="22dp"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/status_database_textView"
-            android:text="Verifica Database"
-            android:textSize="22dp"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/status_version_textview"
+        android:text="Versione Server"
+        android:textAlignment="center"
+        android:textSize="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/status_version_textview"
-            android:text="Versione Server"
-            android:textAlignment="center"
-            android:textSize="22dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/status_button"
+        android:onClick="checkStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="verifica stato" />
 
-        <Button
-            android:id="@+id/status_button"
-            android:onClick="checkStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="verifica stato" />
-
-        <Button
-            android:id="@+id/status_go_back"
-            android:onClick="goBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="torna indietro" />
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/status_go_back"
+        android:onClick="goBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="torna indietro" />
+</LinearLayout>

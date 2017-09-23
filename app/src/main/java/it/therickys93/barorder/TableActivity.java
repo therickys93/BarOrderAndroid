@@ -31,10 +31,16 @@ public class TableActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private List<String> createTables() {
         SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-        String table = settings.getString("BARORDER_TABLE", "20");
-        int count = Integer.parseInt(table);
+        String tableMin = settings.getString("BARORDER_TABLE_MIN", "0");
+        String tableMax = settings.getString("BARORDER_TABLE_MAX", "20");
+        int countMax = Integer.parseInt(tableMax);
+        int countMin = Integer.parseInt(tableMin);
+        return tableRange(countMin, countMax);
+    }
+
+    public static List<String> tableRange(int min, int max){
         List<String> tables = new ArrayList<String>();
-        for(int index = 0; index <= count; index++){
+        for(int index = min; index <= max; index++){
             tables.add(String.valueOf(index));
         }
         return tables;
