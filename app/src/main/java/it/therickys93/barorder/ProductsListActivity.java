@@ -134,8 +134,8 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         @Override
         protected Boolean doInBackground(String... strings) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new DeleteProduct(strings[0]));
                 Response responseObj = Response.parseSuccess(response);
@@ -164,8 +164,8 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         @Override
         protected Boolean doInBackground(String... strings) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new InsertProduct(strings[0]));
                 Response responseObj = Response.parseSuccess(response);
@@ -194,8 +194,8 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         @Override
         protected List<Product> doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new Products());
                 List<Product> products = Response.parseProducts(response);
@@ -221,8 +221,8 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         @Override
         protected Boolean doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new DeleteProductAll());
                 Response responseObj = Response.parseSuccess(response);

@@ -105,8 +105,8 @@ public class ProductActivity extends AppCompatActivity implements AdapterView.On
         @Override
         protected List<Product> doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new Products());
                 List<Product> products = Response.parseProducts(response);

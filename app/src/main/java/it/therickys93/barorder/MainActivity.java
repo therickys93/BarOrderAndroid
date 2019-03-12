@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Order... orders) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new InsertOrder(orders[0]));
                 Response status = Response.parseSuccess(response);
