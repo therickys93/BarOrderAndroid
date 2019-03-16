@@ -125,8 +125,8 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         @Override
         protected List<Order> doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new Payments());
                 List<Order> ordini = Response.parseOrders(response);
@@ -150,8 +150,8 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         @Override
         protected Boolean doInBackground(Order... orders) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder("http://" + url);
+            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
+            BarOrder barorder = new BarOrder(url);
             try {
                 String response = barorder.execute(new PayOrder(orders[0]));
                 Response status = Response.parseSuccess(response);

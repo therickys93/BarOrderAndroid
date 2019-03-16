@@ -27,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         this.appVersionTextView.setText("Versione applicazione: " + BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
 
         SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-        String url = settings.getString("BARORDER_URL", "192.168.1.10");
+        String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
         String tableMax = settings.getString("BARORDER_TABLE_MAX", "20");
         String tableMin = settings.getString("BARORDER_TABLE_MIN", "0");
 
