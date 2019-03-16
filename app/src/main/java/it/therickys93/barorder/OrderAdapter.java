@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import it.therickys93.javabarorderapi.Order;
@@ -49,14 +51,16 @@ public class OrderAdapter extends BaseAdapter {
         }
         TextView id = (TextView)vi.findViewById(R.id.orderID);
         TextView details = (TextView)vi.findViewById(R.id.orderDetails);
+        TextView price = (TextView) vi.findViewById(R.id.orderPrice);
         if(orders == null || orders.size() == 0){
             id.setText("Nessun Ordine Trovato");
             details.setText("");
+            price.setText("");
         } else {
             Order order = orders.get(position);
             id.setText("#" + order.id());
             details.setText(order.prettyToString());
-
+            price.setText(order.price() + "€");
         }
         return vi;
     }

@@ -24,14 +24,16 @@ import it.therickys93.javabarorderapi.DeleteProduct;
 import it.therickys93.javabarorderapi.DeleteProductAll;
 import it.therickys93.javabarorderapi.InsertProduct;
 import it.therickys93.javabarorderapi.Product;
+import it.therickys93.javabarorderapi.ProductWithPrice;
 import it.therickys93.javabarorderapi.Products;
+import it.therickys93.javabarorderapi.ProductsWithPrice;
 import it.therickys93.javabarorderapi.Response;
 
 public class ProductsListActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     private ListView listView;
-    private List<Product> prodotti;
-    private ProductListAdapter adapter;
+    private List<ProductWithPrice> prodotti;
+    private ProductsListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +41,13 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         setContentView(R.layout.activity_products_list);
 
         this.listView = (ListView) findViewById(R.id.productsList);
-        new BarOrderGetProducts().execute();
+        new BarOrderGetProductsWithPrice().execute();
         this.listView.setOnItemLongClickListener(this);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
-        Product product = this.prodotti.get(index);
+        ProductWithPrice product = this.prodotti.get(index);
         String name = product.name();
         new BarOrderDeleteProduct().execute(name);
         return true;
@@ -61,14 +63,15 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
-
+        final EditText nameEditText = (EditText) dialogView.findViewById(R.id.edit1);
+        final EditText priceEditText = (EditText) dialogView.findViewById(R.id.edit2);
         dialogBuilder.setTitle("Nuovo Prodotto");
         dialogBuilder.setMessage("Inserisci nome nuovo prodotto");
         dialogBuilder.setPositiveButton("Fatto", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String name = edt.getText().toString();
-                new BarOrderInsertProduct().execute(name);
+                String name = nameEditText.getText().toString();
+                String price = priceEditText.getText().toString();
+                new BarOrderInsertProduct().execute(name, price);
             }
         });
         dialogBuilder.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
@@ -82,7 +85,7 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
 
     public void deleteProductsAll(View view) {
         new BarOrderDeleteProductsAll().execute();
-        new BarOrderGetProducts().execute();
+        new BarOrderGetProductsWithPrice().execute();
     }
 
     @Override
@@ -155,7 +158,7 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
             } else {
                 Toast.makeText(ProductsListActivity.this, "Riprova!! Prodotto non eliminato!!", Toast.LENGTH_SHORT).show();
             }
-            new BarOrderGetProducts().execute();
+            new BarOrderGetProductsWithPrice().execute();
         }
     }
 
@@ -167,7 +170,7 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
             String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
             BarOrder barorder = new BarOrder(url);
             try {
-                String response = barorder.execute(new InsertProduct(strings[0]));
+                String response = barorder.execute(new InsertProduct(strings[0], Double.parseDouble(strings[1])));
                 Response responseObj = Response.parseSuccess(response);
                 return responseObj.ok();
             } catch (Exception e) {
@@ -185,20 +188,20 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
             } else {
                 Toast.makeText(ProductsListActivity.this, "Riprova!! Prodotto non aggiunto!!", Toast.LENGTH_SHORT).show();
             }
-            new BarOrderGetProducts().execute();
+            new BarOrderGetProductsWithPrice().execute();
         }
     }
 
-    private class BarOrderGetProducts extends AsyncTask<Void, Void, List<Product>> {
+    private class BarOrderGetProductsWithPrice extends AsyncTask<Void, Void, List<ProductWithPrice>> {
 
         @Override
-        protected List<Product> doInBackground(Void... voids) {
+        protected List<ProductWithPrice> doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
             BarOrder barorder = new BarOrder(url);
             try {
-                String response = barorder.execute(new Products());
-                List<Product> products = Response.parseProducts(response);
+                String response = barorder.execute(new ProductsWithPrice());
+                List<ProductWithPrice> products = Response.parseProductsWithPrice(response);
                 return products;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -208,10 +211,10 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         }
 
         @Override
-        protected void onPostExecute(List<Product> products) {
+        protected void onPostExecute(List<ProductWithPrice> products) {
             super.onPostExecute(products);
             prodotti = products;
-            adapter = new ProductListAdapter(ProductsListActivity.this, prodotti);
+            adapter = new ProductsListAdapter(ProductsListActivity.this, prodotti);
             listView.setAdapter(adapter);
         }
     }

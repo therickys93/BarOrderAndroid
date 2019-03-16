@@ -8,6 +8,13 @@
 
     <EditText
         android:id="@+id/edit1"
+        android:hint="Inserisci nome prodotto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <EditText
+        android:id="@+id/edit2"
+        android:hint="Inserisci prezzo prodotto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
