@@ -61,14 +61,16 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+        final EditText nameEditText = (EditText) dialogView.findViewById(R.id.edit1);
+        final EditText priceEditText = (EditText) dialogView.findViewById(R.id.edit2);
 
         dialogBuilder.setTitle("Nuovo Prodotto");
         dialogBuilder.setMessage("Inserisci nome nuovo prodotto");
         dialogBuilder.setPositiveButton("Fatto", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String name = edt.getText().toString();
-                new BarOrderInsertProduct().execute(name);
+                String name = nameEditText.getText().toString();
+                String price = priceEditText.getText().toString();
+                new BarOrderInsertProduct().execute(name, price);
             }
         });
         dialogBuilder.setNegativeButton("Cancella", new DialogInterface.OnClickListener() {
@@ -167,7 +169,7 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
             String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
             BarOrder barorder = new BarOrder(url);
             try {
-                String response = barorder.execute(new InsertProduct(strings[0]));
+                String response = barorder.execute(new InsertProduct(strings[0], Double.parseDouble(strings[1])));
                 Response responseObj = Response.parseSuccess(response);
                 return responseObj.ok();
             } catch (Exception e) {
