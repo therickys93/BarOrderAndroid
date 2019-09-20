@@ -48,15 +48,17 @@ public class OrderAdapter extends BaseAdapter {
             vi = this.inflater.inflate(R.layout.row_layout, null);
         }
         TextView id = (TextView)vi.findViewById(R.id.orderID);
+        TextView price = (TextView)vi.findViewById(R.id.orderPrice);
         TextView details = (TextView)vi.findViewById(R.id.orderDetails);
         if(orders == null || orders.size() == 0){
             id.setText("Nessun Ordine Trovato");
             details.setText("");
+            price.setText("");
         } else {
             Order order = orders.get(position);
             id.setText("#" + order.id());
             details.setText(order.prettyToString());
-
+            price.setText(order.price() + "€");
         }
         return vi;
     }
