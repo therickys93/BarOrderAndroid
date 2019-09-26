@@ -108,7 +108,8 @@ public class StatusActivity extends AppCompatActivity {
         protected Response doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-            BarOrder barorder = new BarOrder(url);
+            String token = settings.getString("BARORDER_TOKEN", "");
+            BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new it.therickys93.javabarorderapi.Status());
                 Response status = Response.parseStatus(response);

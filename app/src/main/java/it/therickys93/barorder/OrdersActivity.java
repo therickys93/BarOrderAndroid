@@ -127,7 +127,8 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
         protected List<Order> doInBackground(Void... voids) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-            BarOrder barorder = new BarOrder(url);
+            String token = settings.getString("BARORDER_TOKEN", "");
+            BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new Orders());
                 List<Order> ordini = Response.parseOrders(response);
@@ -153,7 +154,8 @@ public class OrdersActivity extends AppCompatActivity implements AdapterView.OnI
         protected Boolean doInBackground(Order... orders) {
             SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
             String url = settings.getString("BARORDER_URL", "192.168.1.10");
-            BarOrder barorder = new BarOrder(url);
+            String token = settings.getString("BARORDER_TOKEN", "");
+            BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new CompleteOrder(orders[0]));
                 Response status = Response.parseSuccess(response);

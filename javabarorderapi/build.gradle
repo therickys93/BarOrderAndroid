@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+
+targetCompatibility = '1.7'
+sourceCompatibility = '1.7'
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination file("${buildDir}/reports/jacoco")
+    }
+    afterEvaluate {
+    	classDirectories = files(classDirectories.files.collect {
+    		fileTree(dir: it,
+    		exclude: ['it/therickys93/javabarorderapi/BarOrder.class'])
+    	})
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile 'com.google.code.gson:gson:2.8.0'
+	compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.github.stefanbirkner:system-rules:1.16.0'
+    testCompile 'org.mockito:mockito-core:1.+'
+}
