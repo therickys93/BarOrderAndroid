@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,6 +29,7 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
     private ListView listView;
     private List<Order> orders;
     private OrderAdapter adapter;
+    private SwipeRefreshLayout pullToRefresh;
     private static int TIMER_DELAY = 1000;
     private Handler handler;
 
@@ -37,17 +39,25 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_payments);
 
         handler = new Handler();
-        startRepeatingTask();
+//        startRepeatingTask();
 
+        this.pullToRefresh = (SwipeRefreshLayout)findViewById(R.id.pullToRefresh);
         this.listView = (ListView) findViewById(R.id.paymentsListView);
         new BarOrderGetPayments().execute();
         this.listView.setOnItemClickListener(this);
+        this.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new BarOrderGetPayments().execute();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopRepeatingTask();
+//        stopRepeatingTask();
     }
 
     Runnable mStatusChecker = new Runnable() {
