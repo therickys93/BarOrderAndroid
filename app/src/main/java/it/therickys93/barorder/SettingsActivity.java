@@ -28,9 +28,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         this.appVersionTextView.setText("Versione applicazione: " + BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
 
-        SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-        String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-        String token = settings.getString("BARORDER_TOKEN", "password");
+        SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
+        String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
+        String token = settings.getString(BarOrderConstants.BARORDER_TOKEN_KEY, BarOrderConstants.BARORDER_TOKEN_VALUE);
         String tableMax = settings.getString("BARORDER_TABLE_MAX", "20");
         String tableMin = settings.getString("BARORDER_TABLE_MIN", "0");
 
@@ -41,10 +41,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void doneSettings(View view) {
-        SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+        SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("BARORDER_URL", this.editTextUrl.getText().toString());
-        editor.putString("BARORDER_TOKEN", this.editTextToken.getText().toString());
+        editor.putString(BarOrderConstants.BARORDER_URL_KEY, this.editTextUrl.getText().toString());
+        editor.putString(BarOrderConstants.BARORDER_TOKEN_KEY, this.editTextToken.getText().toString());
         editor.putString("BARORDER_TABLE_MIN", this.editTextTableMin.getText().toString());
         editor.putString("BARORDER_TABLE_MAX", this.editTextTableMax.getText().toString());
         editor.commit();

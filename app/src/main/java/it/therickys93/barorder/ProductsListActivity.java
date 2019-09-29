@@ -137,9 +137,9 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
 
         @Override
         protected Boolean doInBackground(String... strings) {
-            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-            String token = settings.getString("BARORDER_TOKEN", "");
+            SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
+            String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
+            String token = settings.getString(BarOrderConstants.BARORDER_TOKEN_KEY, BarOrderConstants.BARORDER_TOKEN_VALUE);
             BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new DeleteProduct(strings[0]));
@@ -168,9 +168,9 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
 
         @Override
         protected Boolean doInBackground(String... strings) {
-            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-            String token = settings.getString("BARORDER_TOKEN", "");
+            SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
+            String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
+            String token = settings.getString(BarOrderConstants.BARORDER_TOKEN_KEY, BarOrderConstants.BARORDER_TOKEN_VALUE);
             BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new InsertProduct(strings[0], Double.parseDouble(strings[1])));
@@ -199,9 +199,9 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
 
         @Override
         protected List<ProductWithPrice> doInBackground(Void... voids) {
-            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-            String token = settings.getString("BARORDER_TOKEN", "");
+            SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
+            String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
+            String token = settings.getString(BarOrderConstants.BARORDER_TOKEN_KEY, BarOrderConstants.BARORDER_TOKEN_VALUE);
             BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new ProductsWithPrice());
@@ -227,9 +227,9 @@ public class ProductsListActivity extends AppCompatActivity implements AdapterVi
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
-            String url = settings.getString("BARORDER_URL", "http://192.168.1.10");
-            String token = settings.getString("BARORDER_TOKEN", "");
+            SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
+            String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
+            String token = settings.getString(BarOrderConstants.BARORDER_TOKEN_KEY, BarOrderConstants.BARORDER_TOKEN_VALUE);
             BarOrder barorder = new BarOrder(url, token);
             try {
                 String response = barorder.execute(new DeleteProductAll());

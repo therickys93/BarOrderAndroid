@@ -30,7 +30,7 @@ public class TableActivity extends AppCompatActivity implements AdapterView.OnIt
 
 
     private List<String> createTables() {
-        SharedPreferences settings = getSharedPreferences("MySettingsBarOrder", 0);
+        SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
         String tableMin = settings.getString("BARORDER_TABLE_MIN", "0");
         String tableMax = settings.getString("BARORDER_TABLE_MAX", "20");
         int countMax = Integer.parseInt(tableMax);
