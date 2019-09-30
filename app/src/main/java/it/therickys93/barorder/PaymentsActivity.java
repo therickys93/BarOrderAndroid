@@ -30,17 +30,11 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
     private List<Order> orders;
     private OrderAdapter adapter;
     private SwipeRefreshLayout pullToRefresh;
-    private static int TIMER_DELAY = 1000;
-    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments);
-
-        handler = new Handler();
-//        startRepeatingTask();
-
         this.pullToRefresh = (SwipeRefreshLayout)findViewById(R.id.pullToRefresh);
         this.listView = (ListView) findViewById(R.id.paymentsListView);
         new BarOrderGetPayments().execute();
@@ -57,26 +51,6 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        stopRepeatingTask();
-    }
-
-    Runnable mStatusChecker = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                new BarOrderGetPayments().execute();
-            } finally {
-                handler.postDelayed(mStatusChecker, TIMER_DELAY);
-            }
-        }
-    };
-
-    void startRepeatingTask() {
-        mStatusChecker.run();
-    }
-
-    void stopRepeatingTask() {
-        handler.removeCallbacks(mStatusChecker);
     }
 
     @Override
