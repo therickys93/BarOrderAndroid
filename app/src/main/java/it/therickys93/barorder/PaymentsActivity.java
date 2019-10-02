@@ -7,11 +7,14 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
     private ListView listView;
     private List<Order> orders;
     private OrderAdapter adapter;
+    private EditText inputSearch;
     private SwipeRefreshLayout pullToRefresh;
 
     @Override
@@ -37,6 +41,7 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_payments);
         this.pullToRefresh = (SwipeRefreshLayout)findViewById(R.id.pullToRefresh);
         this.listView = (ListView) findViewById(R.id.paymentsListView);
+        this.inputSearch = (EditText)findViewById(R.id.inputSearch);
         new BarOrderGetPayments().execute();
         this.listView.setOnItemClickListener(this);
         this.pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -44,6 +49,23 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
             public void onRefresh() {
                 new BarOrderGetPayments().execute();
                 pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing to do here...
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                adapter.getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // nothing to do here...
             }
         });
     }
