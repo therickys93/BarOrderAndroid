@@ -77,7 +77,8 @@ public class PaymentsActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-        Order order = this.orders.get(index);
+        Order order = this.adapter.getItem(index);
+        this.inputSearch.setText("");
         new BarOrderPayOrder().execute(order);
         new BarOrderGetPayments().execute();
     }
