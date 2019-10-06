@@ -124,6 +124,14 @@ public class EndpointsTest {
 		assertEquals("/v1/orders", orders.endpoint());
 		assertNull(orders.toJson());
 	}
+
+	@Test
+	public void testOrderByID() {
+		GetOrder order = new GetOrder(1021);
+		assertEquals("GET", order.method());
+		assertEquals("/v1/order/1021", order.endpoint());
+		assertNull(order.toJson());
+	}
 	
 	@Test
 	public void testThirteen() {
