@@ -1,22 +1,30 @@
 package it.therickys93.barorder;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import net.glxn.qrgen.android.QRCode;
 
 import java.io.IOException;
 
@@ -153,6 +161,25 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_PRODUCT_ACTIVITY_CODE);
     }
 
+    public void showQRCode(String url, Order order){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.qrcodelayout, null);
+        dialogBuilder.setView(dialogView);
+
+        ImageView imageView = (ImageView) dialogView.findViewById(R.id.qrcodeimage);
+
+        String qrcodemessage = url + "/v1/order/" + order.id();
+        imageView.setImageBitmap(QRCode.from(qrcodemessage).withSize(500, 500).bitmap());
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // do nothing
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
     private class BarOrderAsyncTask extends AsyncTask<Order, Void, Boolean> {
 
         @Override
@@ -176,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aBoolean);
             if(aBoolean) {
                 Toast.makeText(MainActivity.this, "Ordine effettuato con successo!!!", Toast.LENGTH_SHORT).show();
+                SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
+                String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
+                showQRCode(url, order);
             } else {
                 Toast.makeText(MainActivity.this, "Riprova!! Ordine non effettuato!!", Toast.LENGTH_SHORT).show();
             }
