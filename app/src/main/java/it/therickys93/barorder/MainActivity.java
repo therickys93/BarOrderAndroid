@@ -206,7 +206,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Ordine effettuato con successo!!!", Toast.LENGTH_SHORT).show();
                 SharedPreferences settings = getSharedPreferences(BarOrderConstants.BARORDER_SETTINGS, 0);
                 String url = settings.getString(BarOrderConstants.BARORDER_URL_KEY, BarOrderConstants.BARORDER_URL_VALUE);
-                showQRCode(url, order);
+                boolean qrcode = settings.getBoolean(BarOrderConstants.BARORDER_SHOW_QR_CODE_KEY, BarOrderConstants.BARORDER_SHOW_QR_CODE_VALUE);
+                if(qrcode) {
+                    showQRCode(url, order);
+                }
             } else {
                 Toast.makeText(MainActivity.this, "Riprova!! Ordine non effettuato!!", Toast.LENGTH_SHORT).show();
             }

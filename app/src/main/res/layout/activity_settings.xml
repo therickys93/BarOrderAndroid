@@ -34,6 +34,12 @@
         android:ems="10"
         android:hint="INSERISCI NUMERO TAVOLO MAX: "/>
 
+    <CheckBox
+        android:id="@+id/showQRCodeCheckBox"
+        android:text="Mostra QR Code dell'ordine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
