@@ -50,6 +50,7 @@ dependencies {
     })
 
     compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.budiyev.android:code-scanner:2.0.0'
     compile 'com.github.kenglxn.QRGen:android:2.6.0'
     compile project(':javabarorderapi')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

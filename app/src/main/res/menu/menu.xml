@@ -21,4 +21,7 @@
         />
     <item android:id="@+id/prodotti"
         android:title="Prodotti" />
+
+    <item android:id="@+id/qrcode"
+        android:title="QR Code" />
 </menu>
