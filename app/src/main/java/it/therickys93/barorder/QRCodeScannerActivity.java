@@ -2,9 +2,10 @@ package it.therickys93.barorder;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -59,7 +59,9 @@ public class QRCodeScannerActivity extends AppCompatActivity {
                     public void run() {
                         Vibrator vb = (Vibrator)   getSystemService(Context.VIBRATOR_SERVICE);
                         vb.vibrate(100);
-                        Toast.makeText(QRCodeScannerActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(result.getText()));
+                        startActivity(intent);
                     }
                 });
             }
@@ -89,6 +91,9 @@ public class QRCodeScannerActivity extends AppCompatActivity {
                 else if(cameraID == Camera.CameraInfo.CAMERA_FACING_BACK)
                     cameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
                 mCodeScanner.setCamera(cameraID);
+                return true;
+            case R.id.go_back:
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
