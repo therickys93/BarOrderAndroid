@@ -32,14 +32,14 @@ android {
 }
 
 android.applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-        def apkName = "Wiki-${variant.versionName}.${variant.versionCode}"
+    variant.outputs.all {
+        def apkName = "BarOrder-${variant.versionName}.${variant.versionCode}";
         if (variant.buildType.name == "release") {
             apkName += "-RELEASE.apk"
         } else {
             apkName += "-SNAPSHOT.apk"
         }
-        output.outputFile = new File(output.outputFile.parent, apkName)
+        outputFileName = apkName
     }
 }
 
