@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) dialogView.findViewById(R.id.qrcodeimage);
 
-        String message = url + "/v1/order/" + order.id();
+        String message = url + "/order/" + order.id();
         dialogBuilder.setTitle("Order: #" + order.id());
         imageView.setImageBitmap(QRCode.from(message).withSize(500, 500).bitmap());
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
